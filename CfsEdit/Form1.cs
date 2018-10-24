@@ -38,7 +38,7 @@ namespace JoelMcbeth.CfsEdit
 
                     FillFormData();
 
-                    //palettePanel.Palette = _file.ColorPalette;                    
+                    palettePanel.Palette = _file.ColorPalette;                    
                     palettePanel.Shadows = _file.Shadows;
                     palettePanel.Lights = _file.Lights;
 

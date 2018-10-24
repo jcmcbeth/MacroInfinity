@@ -50,7 +50,7 @@ namespace JoelMcbeth.CfsEdit
 
                 if (_file != null)
                 {
-                    //_frames = _file.GetBitmapFrames();
+                    _frames = _file.GetBitmapFrames();
                     this.Invalidate();
 
                     // Make sure the interval is atleast 1
