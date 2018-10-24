@@ -1,0 +1,23 @@
+
+
+Session Request [c -> s]
+
+SHORT	Opcode;		// 00 01
+SHORT	Unknown;	// 00 03
+INT	SessionID;
+
+Session Response [s -> c]
+
+SHORT	Opcode;		// 00 02
+INT	SessionID;
+INT	Unknown;	// 00 00 00 00
+
+Zonelist Request [c -> s]
+
+SHORT	Opcode;		// 00 03
+
+
+Disconnect [c -> s]
+
+SHORT	Opcode		// 00 05
+

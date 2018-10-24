@@ -1,0 +1,2 @@
+﻿- make it so the directory picker dialog is synchronous with the textbox when loading
+- save the output file in the settings also

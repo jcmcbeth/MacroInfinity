@@ -1,0 +1,637 @@
+********************************************************************************
+*                              Item Types                                      *
+********************************************************************************
+Multi Items		= 1
+Ammo Items		= 4
+Projectile Items	= 6
+Vehicle Maker Items	= 7
+Multi-Use Items		= 8
+Repair Items		= 11
+Control Items		= 12
+Utility Items		= 13
+Item Maker		= 14
+Upgrade Items		= 15
+Skill Items		= 16
+Warp Items		= 17
+
+
+********************************************************************************
+*                             Pickup Modes                                     *
+********************************************************************************
+Manual			= 0
+Manual Auto All		= 1
+Manual Auto Need	= 2
+Auto All		= 3
+Auto Need		= 4
+Auto Have None		= 5
+
+
+********************************************************************************
+*                               Warp Modes                                     *
+********************************************************************************
+Random Warp		= 0
+Warp Team		= 1
+Warp Anyone		= 2
+Summon Team		= 3
+Summon Anyone		= 4
+Portal			= 5
+Lio			= 6
+
+
+********************************************************************************
+*                              Soccer Throw                                    *
+********************************************************************************
+Throw Never		= 0
+Throw Always		= 1
+Throw Carrying		= 2
+
+
+********************************************************************************
+*                             Multi Link Mode                                  *
+********************************************************************************
+None			= 0	// Not linked to other child weapons
+Disappear		= 1	// Disappear when another child weapon disappears
+Explode			= 2	// Explode when another child weapon explodes
+********************************************************************************
+
+
+********************************************************************************
+*                              Multi Item [1]                                  *
+********************************************************************************
+Index	Field			Description
+0	Item Type		Type of item
+1	Version			probably the item's version it was saved under
+2	Item ID			Unique Number Identifier
+3	Name			Name of the item
+4	Category		Category of the item, used in the buy list
+5	Skill Logic		Who can use the item, classes and such
+6	Description		Description of the item
+
+7	Weight			The weight of the item, *1000
+8	Buy Price		0 is unpurchasable
+9	Probability		-1, never hide or allow in inventory, 0 is hide
+10	Dropable		0 is cannot be droped, anything else is can be dropped
+11	Key Preference		Default key it is assigned to, 0 for no preference
+12	Recommended		Recommended quantity used to prioritize auto dumping
+13	Max Allowed		Max allowed in inventory, 0 is unlimited, negative numbers equal absolute limit, positive is usable limit
+14	Pickup Mode		How to handling pick up the item
+15	Sell Price		-1 no buy back, 0 will take it for free, item has to be purchasable to be sellable
+16	Expire Timer		How long an item will stay in your inventory before it expires, 0 is never, if dropped it disappears
+
+17	Blob File		The blob file the cfs file is in
+18	Filename		The filename of the cfs
+19	Light Permutation	Light and color intensity, 0-23 white, 24-47 red, 48-71 green, 72-95 blue, higher is full
+20	Palette Offset		Negative numbers mean special effects
+21	Hue			Hue Shift
+22	Saturation		Saturation shift
+23	Value			Value Shift
+24	Animation Time		Animation time in ticks, 0 to use cfs file
+
+25	Cash			Amount of money the item is worth, can be negative
+26	Energy			Amount of Energy the item is worth, can be negative
+27	Health			Amount of Health the item is worth, can be negative
+28	Repair			Amount of Repair the item is worth, if in a vehicle, can be negative
+29	Experience		Amount of experience the item is worth, can be negative
+
+30-46	Recieved Items		The ID of the item the player will recieve, 16 times
+
+
+********************************************************************************
+*                               Ammo Item [4]                                  *
+********************************************************************************
+Index	Field			Description
+0	Item Type		Type of item 	
+1	Version			probably the item's version it was saved under
+2	Item ID			Unique Number Identifier
+3	Name			Name of the item
+4	Category		Category of the item, used in the buy list
+5	Skill Logic		Who can use the item, classes and such
+6	Description		Description of the item
+
+				General Information
+7	Weight			The weight of the item, *1000
+8	Buy Price		0 is unpurchasable
+9	Probability		-1, never hide or allow in inventory, 0 is hide
+10	Dropable		0 is cannot be droped, anything else is can be dropped
+11	Key Preference		Default key it is assigned to, 0 for no preference
+12	Recommended		Recommended quantity used to prioritize auto dumping
+13	Max Allowed		Max allowed in inventory, 0 is unlimited, negative numbers equal absolute limit, positive is usable limit
+14	Pickup Mode		How to handling pick up the item
+15	Sell Price		-1 no buy back, 0 will take it for free, item has to be purchasable to be sellable
+16	Expire Timer		How long an item will stay in your inventory before it expires, 0 is never, if dropped it disappears
+
+				The Icon Image
+17	Blob File		The blob file the cfs file is in
+18	Filename		The filename of the cfs
+19	Light Permutation	Light and color intensity, 0-23 white, 24-47 red, 48-71 green, 72-95 blue, higher is full
+20	Palette Offset		Negative numbers mean special effects
+21	Hue			Hue Shift
+22	Saturation		Saturation shift
+23	Value			Value Shift
+24	Animation Time		Animation time in ticks, 0 to use cfs file
+
+
+********************************************************************************
+*                         Projectile Item [6]                                  *
+********************************************************************************
+Index	Field			Description
+0	Item Type		Type of item 	
+1	Version			probably the item's version it was saved under
+2	Item ID			Unique Number Identifier
+3	Name			Name of the item
+4	Category		Category of the item, used in the buy list
+5	Skill Logic		Who can use the item, classes and such
+6	Description		Description of the item
+
+7	Weight			The weight of the item, *1000
+8	Buy Price		0 is unpurchasable
+9	Probability		-1, never hide or allow in inventory, 0 is hide
+10	Dropable		0 is cannot be droped, anything else is can be dropped
+11	Key Preference		Default key it is assigned to, 0 for no preference
+12	Recommended		Recommended quantity used to prioritize auto dumping
+13	Max Allowed		Max allowed in inventory, 0 is unlimited, negative numbers equal absolute limit, positive is usable limit
+14	Pickup Mode		How to handling pick up the item
+15	Sell Price		-1 no buy back, 0 will take it for free, item has to be purchasable to be sellable
+16	Expire Timer		How long an item will stay in your inventory before it expires, 0 is never, if dropped it disappears
+
+				Icon Graphics
+17	Blob File		The blob file the cfs file is in
+18	Filename		The filename of the cfs
+19	Light Permutation	Light and color intensity, 0-23 white, 24-47 red, 48-71 green, 72-95 blue, higher is full
+20	Palette Offset		Negative numbers mean special effects
+21	Hue			Hue Shift
+22	Saturation		Saturation shift
+23	Value			Value Shift
+24	Animation Time		Animation time in ticks, 0 to use cfs file
+
+25	Use Ammo ID		ID of the ammo this weapon uses, 0 for no ammo needed
+26	Ammo Per Shot		Amount used per shot fired
+27	Ammo Capacity		Amount of shots before the reload delay
+28	Required Item		ID of an item required to use this
+29	Required Item Amount	Amount of the required item needed to use the item
+
+30-45	Energy Cost		Amount of energy cost to fire the item on this terrain (*1000). -1 is never, -2 is max energy, -3 is remaining energy
+
+46	Fire Delay		Amount of time this weapon can be fired again (in ticks)
+47	Fire Delay Other	Amount of time other weapons can be fire again after this one (in ticks)
+48	Reload Delay		Amount of time to reload (in ticks)
+49	Route Range		Distance in pixels to have this packet sent to you. 0 is to use default range
+50	Route Rotational Range	Additional amount added to the route range depending on the direction fired (in pixels)
+51	Unknown			
+52	Recoil			Amount of backward thrust when this item is fired
+53	Vertical Recoil		Amount of vertical thrust when the item is fired (for vehicle hops)
+54	Prefire Delay		Delay before pressing the fire key and it firing
+
+				Prefire Graphics
+55	Blob File		The blob file the cfs file is in
+56	Filename		The filename of the cfs
+57	Light Permutation	Light and color intensity, 0-23 white, 24-47 red, 48-71 green, 72-95 blue, higher is full
+58	Palette Offset		Negative numbers mean special effects
+59	Hue			Hue Shift
+60	Saturation		Saturation shift
+61	Value			Value Shift
+62	Animation Time		Animation time in ticks, 0 to use cfs file
+
+				Prefire Sounds
+63	Blob File		The blob file the wav file is in
+64	Filename		The filename of the wav
+65	Simultaneous		How many times the sound can be played simultaneously
+66	Unknown
+
+67	Move Prefire Cancel	If movement cancels prefire
+68	Prefire Notify		If others should be notified of prefire
+69	Cash Cost		Amount of cash it cost to fire this item
+70	Use With Ball		If the item is allowed to be used when carrying a ball
+71	Use With Flag		If the item is allowed to be used when carrying a flag
+72	Soccer Throw		Throw mode style
+73	Ball Friction		Amount of friction on the ball, 0 none, 10000 near infinite, -1 is use default
+74	Ball Speed		How fast the ball is thrown, 0 is use default
+75	Ball Low Fire Angle	Low angle to fire the ball at (in degrees)
+76	Ball High Fire Angle	High angle to fire the ball at (in degrees)
+
+77	Horizontal Friction
+78	Inherit Speed
+79	Inherit Z Speed
+80	Start Height Adjust
+81	Low Rotation Angle
+82	High Rotation Angle
+83	Low Fire Angle
+84	High Fire Angle
+85	Muzzle Velocity
+86	Gravity Acceleration	
+87	Bounce Horizontal
+	Speed	
+88	Bounce Count
+89	Floor Bounce Vertical
+	Speed
+90	Floor Bounce
+	Horizontal Speed
+91	Floor Bounce Count
+92	Proximity Radius
+93	Trigger Weight
+94	Alive Time
+95	Rotational Start Time	
+96	Rotational End Time
+97	Rotational Speed
+98	Rotational Acceleration
+99	Inactive Time
+100	Damage Mode
+101	Trail Delay
+102	Explosion Recoil
+	Radius
+103	Explosion Recoil
+	Vehicle
+104	Explosion Recoil
+	Vehicle Vertical
+105	Explosion Recoil
+	Ignore Time
+106	Explosion Recoil
+	Weapon
+107	Explosion Recoil
+	Directional Percent
+108	Explode ID
+109	Unknown
+110	Max Live Category
+	Code
+111	Max Live Per Player
+112	Max Live Per Team
+113	Max Live Per Level
+114	Anti Effects Duration
+	Radius
+115	Anti Effects Duration
+	Recharge
+116	Anti Effects Duration
+	Fire
+117	Anti Effects Duration
+	Thrust
+118	Anti Effects Duration
+	Rotate
+119	Anti Effects Duration
+	Ball Pickup Duration
+120	Anti Effects Duration
+	Ball Throw Duration
+121	Prevent Point Blank	
+122	Unknown
+
+				Kinetic Damage
+123	Blast Radius
+124	Inner Damage
+125	Outer Damage
+				Explosive Damage
+126	Blast Radius
+127	Inner Damage
+128	outer Damage
+				Electronic Damage
+129	Blast Radius
+130	Inner Damage
+131	Outer Damage
+				Psionic Damage
+132	Blast Radius
+133	Inner Damage
+134	Out Damage
+				Bypass Damage
+135	Blast Radius
+136	Inner Damage
+137	Outer Damage
+				Energy Drain
+136	Blast Radius
+137	Inner Damage
+138	Outer Damage
+
+				Fire Graphics
+139	Blob File		The blob file the cfs file is in
+140	Filename		The filename of the cfs
+141	Light Permutation	Light and color intensity, 0-23 white, 24-47 red, 48-71 green, 72-95 blue, higher is full
+142	Palette Offset		Negative numbers mean special effects
+143	Hue			Hue Shift
+144	Saturation		Saturation shift
+145	Value			Value Shift
+146	Animation Time		Animation time in ticks, 0 to use cfs file
+
+				Projectile Graphics
+147	Blob File		The blob file the cfs file is in
+148	Filename		The filename of the cfs
+149	Light Permutation	Light and color intensity, 0-23 white, 24-47 red, 48-71 green, 72-95 blue, higher is full
+150	Palette Offset		Negative numbers mean special effects
+151	Hue			Hue Shift
+152	Saturation		Saturation shift
+153	Value			Value Shift
+154	Animation Time		Animation time in ticks, 0 to use cfs file
+
+				Shadow Graphics
+155	Blob File		The blob file the cfs file is in
+156	Filename		The filename of the cfs
+157	Light Permutation	Light and color intensity, 0-23 white, 24-47 red, 48-71 green, 72-95 blue, higher is full
+158	Palette Offset		Negative numbers mean special effects
+159	Hue			Hue Shift
+160	Saturation		Saturation shift
+161	Value			Value Shift
+162	Animation Time		Animation time in ticks, 0 to use cfs file
+
+				Trail Graphics
+163	Blob File		The blob file the cfs file is in
+164	Filename		The filename of the cfs
+165	Light Permutation	Light and color intensity, 0-23 white, 24-47 red, 48-71 green, 72-95 blue, higher is full
+167	Palette Offset		Negative numbers mean special effects
+168	Hue			Hue Shift
+169	Saturation		Saturation shift
+170	Value			Value Shift
+171	Animation Time		Animation time in ticks, 0 to use cfs file
+
+				Explosion Graphics
+172	Blob File		The blob file the cfs file is in
+173	Filename		The filename of the cfs
+174	Light Permutation	Light and color intensity, 0-23 white, 24-47 red, 48-71 green, 72-95 blue, higher is full
+175	Palette Offset		Negative numbers mean special effects
+176	Hue			Hue Shift
+177	Saturation		Saturation shift
+178	Value			Value Shift
+179	Animation Time		Animation time in ticks, 0 to use cfs file
+
+				Firing Sound
+180	Blob File		The blob file the wav file is in
+181	Filename		The filename of the wav
+182	Simultaneous		How many times the sound can be played simultaneously
+183	Unknown
+				Explosion Sound				
+184	Blob File		The blob file the wav file is in
+185	Filename		The filename of the wav
+186	Simultaneous		How many times the sound can be played simultaneously
+187	Unknown
+
+				Bounce Sound
+188	Blob File		The blob file the wav file is in
+189	Filename		The filename of the wav
+190	Simultaneous		How many times the sound can be played simultaneously
+191	Unknown
+********************************************************************************
+
+********************************************************************************
+*                         Vehicle Maker [7]                                    *
+********************************************************************************
+Index		Data			Description
+0-6		All Items
+7-16		General 1
+17-24		Graphics		Icon Graphics
+25-29		Ammo Properties
+30-45		Energy Cost
+46-54		Fire Properties
+55-62		Graphics		Prefire Graphics
+63-66		Sound			Prefire Sound
+67-76		Soccer Properties
+77		Vehicle ID		The ID of the vehicle the vehicle maker creates
+********************************************************************************
+
+
+********************************************************************************
+*                         Multi-Use [8]                                        *
+********************************************************************************
+Index		Data			Description
+0-6		All Items
+7-16		General 1
+17-24		Graphics		Icon Graphics
+25-29		Ammo Properties
+30-45		Energy Cost
+46-54		Fire Properties
+55-62		Graphics		Prefire Graphics
+63-66		Sound			Prefire Sound
+67-76		Soccer Properties
+77-81		Sound			Firing Sound
+82-87		Child Item		Settings for a child weapon that is fired with parent item
+88-*		Child Items		A child item field for each child item
+
+********************************************************************************
+
+
+********************************************************************************
+*                         Repair Item [11]                                     *
+********************************************************************************
+Index		Data			Description
+0-6		All Items
+7-16		General 1
+17-24		Graphics		Icon Graphics
+25-29		Ammo Properties
+30-45		Energy Cost
+46-54		Fire Properties
+55-62		Graphics		Prefire Graphics
+63-66		Sound			Prefire Sound
+67-76		Soccer Properties
+77-81		Repair Properties
+82-89		Graphics		Repair Graphics
+90-94		Sound			Repair Sound
+
+********************************************************************************
+
+********************************************************************************
+*                         Control Item [12]                                    *
+********************************************************************************
+Index		Data			Description
+0-6		All Items
+7-16		General 1
+17-24		Graphics		Icon Graphics
+25-29		Ammo Properties
+30-45		Energy Cost
+46-54		Fire Properties
+55-62		Graphics		Prefire Graphics
+63-66		Sound			Prefire Sound
+67-76		Soccer Properties
+77-78		Control Properties
+79-86		Graphics		Effect Graphics
+87-90		Sound			Fire Sound
+
+********************************************************************************
+
+
+********************************************************************************
+*                         Utility Item [13]                                    *
+********************************************************************************
+Index		Data			Description
+0-6		All Items
+7-16		General 1
+17-24		Graphics		Icon Graphics
+25-29		Ammo Properties
+30-45		Energy Cost
+46-54		Fire Properties
+55-62		Graphics		Prefire Graphics
+63-66		Sound			Prefire Sound
+67-76		Soccer Properties
+77-81		Repair Properties
+82-89		Graphics		Repair Graphics
+90-94		Sound			Fire Sound
+
+********************************************************************************
+
+********************************************************************************
+*                         Item Maker [14]                                      *
+********************************************************************************
+Index		Data			Description
+0-6		Item Properties
+7-16		General Properties
+17-24		Graphics		Icon Graphics
+25-29		Ammo Properties
+30-45		Energy Cost
+46-54		Fire Properties
+55-62		Graphics		Prefire Graphics
+63-66		Sound			Prefire Sound
+67-76		Soccer Properties
+77-78		Item Maker Properties
+********************************************************************************
+
+
+********************************************************************************
+*                         Upgrade [15]                                         *
+********************************************************************************
+Index		Data			Description
+0-6		Item Properties
+7-16		General Properties
+17-24		Graphics		Icon Graphics
+25-40		Upgrade Properties	Upgrade properties for up to 16 upgrades
+********************************************************************************
+
+********************************************************************************
+*                         Skill [16]                                           *
+********************************************************************************
+Index		Data			Description
+0-6		Item Properties
+7-16		General Properties
+17-24		Graphics		Icon Graphics
+25-40		Skill Properties	Skill properties for up to 16 skills
+********************************************************************************
+
+********************************************************************************
+*                         Warp Item [17]                                       *
+********************************************************************************
+Index		Data			Description
+0-6		Item Properties
+7-16		General Properties
+17-24		Graphics		Icon Graphics
+25-29		Ammo Properties
+30-45		Energy Cost
+46-54		Fire Properties
+55-62		Graphics		Prefire Graphics
+63-66		Sound			Prefire Sound
+67-76		Soccer Properties
+77-81		Warp Properties
+82-89		Graphics		Warp Graphics
+90-93		Sound			Warp Sound
+********************************************************************************
+
+
+**** Item Properties ****
+Item Type		// Type of item 	
+Version			// probably the item's version it was saved under
+Item ID			// Unique Number Identifier
+Name			// Name of the item
+Category		// Category of the item, used in the buy list
+Skill Logic		// Who can use the item, classes and such
+Description		// Description of the item
+
+
+**** General Properties ****
+Weight			// The weight of the item, *1000
+Buy Price		// 0 is unpurchasable
+Probability		// -1, never hide or allow in inventory, 0 is hide
+Dropable		// 0 is cannot be droped, anything else is can be dropped
+Key Preference		// Default key it is assigned to, 0 for no preference
+Recommended		// Recommended quantity used to prioritize auto dumping
+Max Allowed		// Max allowed in inventory, 0 is unlimited, negative numbers equal absolute limit, positive is usable limit
+Pickup Mode		// How to handling pick up the item
+Sell Price		// -1 no buy back, 0 will take it for free, item has to be purchasable to be sellable
+Expire Timer		// How long an item will stay in your inventory before it expires, 0 is never, if dropped it disappears
+
+**** Graphics ****
+Blob File		// The blob file the cfs file is in
+Filename		// The filename of the cfs
+Light Permutation	// Light and color intensity, 0-23 white, 24-47 red, 48-71 green, 72-95 blue, higher is full
+Palette Offset		// Negative numbers mean special effects
+Hue			// Hue Shift
+Saturation		// Saturation shift
+Value			// Value Shift
+Animation Time		// Animation time in ticks, 0 to use cfs file
+
+
+**** Ammo Properties ****
+Use Ammo ID		// ID of the ammo this weapon uses, 0 for no ammo needed
+Ammo Per Shot		// Amount used per shot fired
+Ammo Capacity		// Amount of shots before the reload delay
+Required Item		// ID of an item required to use this
+Required Item Amount	// Amount of the required item needed to use the item
+
+**** Cash ****
+Cash			// Amount of money the item is worth, can be negative
+Energy			// Amount of Energy the item is worth, can be negative
+Health			// Amount of Health the item is worth, can be negative
+Repair			// Amount of Repair the item is worth, if in a vehicle, can be negative
+Experience		// Amount of experience the item is worth, can be negative
+Recieved Items		// The ID of the item the player will recieve, 16 times
+
+**** Fire Properties ****
+Fire Delay		Amount of time this weapon can be fired again (in ticks)
+Fire Delay Other	Amount of time other weapons can be fire again after this one (in ticks)
+Reload Delay		Amount of time to reload (in ticks)
+Route Range		Distance in pixels to have this packet sent to you. 0 is to use default range
+Route Rotational Range	Additional amount added to the route range depending on the direction fired (in pixels)
+Unknown			
+Recoil			Amount of backward thrust when this item is fired
+Vertical Recoil		Amount of vertical thrust when the item is fired (for vehicle hops)
+Prefire Delay		Delay before pressing the fire key and it firing
+
+**** Energy Cost ****
+Terrain 0-15		// Amount of energy cost to fire the item on this terrain (*1000). -1 is never, -2 is max energy, -3 is remaining energy
+
+**** Sounds ****
+Blob File		// The blob file the wav file is in
+Filename		// The filename of the wav
+Simultaneous		// How many times the sound can be played simultaneously
+Unknown			//
+
+**** Multi Use ****
+Child Item ID		// The ID of the child weapon to fire
+Delta X			// Distance in X (left/right) to fire from
+Delta Y			// Distance in Y (forward/backward) to fire from
+Delta Z			// Distance in Z (up/down) to fire from
+Delta Angle		// Change in fire angle (in degrees)
+Multi-Link Mode		// How the child weapon is linked to the other child weapons
+
+**** Repair Properties ****
+Type			// Type of repair, 0 for health, 1 for vehicle repair, 2 for energy repair
+Amount			// Amount to repair, positive is a percentage, negative is a constant amount
+Distance		// Range of repair effect, 0 for only healer, positive for a range for a selected person, and negative for a range for everybody
+Time			// For occupied vehicles/health/energy, unoccupied is instant
+Repair Self		// If the healer should be healed during an area heal
+
+
+**** Soccer Properties ****
+Move Prefire Cancel	If movement cancels prefire
+Prefire Notify		If others should be notified of prefire
+Cash Cost		Amount of cash it cost to fire this item
+Use With Ball		If the item is allowed to be used when carrying a ball
+Use With Flag		If the item is allowed to be used when carrying a flag
+Soccer Throw		Throw mode style
+Ball Friction		Amount of friction on the ball, 0 none, 10000 near infinite, -1 is use default
+Ball Speed		How fast the ball is thrown, 0 is use default
+Ball Low Fire Angle	Low angle to fire the ball at (in degrees)
+Ball High Fire Angle	High angle to fire the ball at (in degrees)		
+
+**** Control Properties ****
+Control Distance	How close the player has to be to control the item.
+Control Time		The length of the control.
+
+**** Item Maker Properties ****
+Item ID			// ID of the item to make
+Item Amount		// Amount of the item to create, negative numbers create in the players inventory
+
+**** Upgrade Properties ****
+Input Item		// The the ID of the input item that is upgraded
+Output Item		// The id of the output of upgrading the input item
+
+**** Skill Properties ****
+Skill Logic		// The skill logic you must meet
+Skill ID		// The ID of the skill that is purchased with the item
+
+**** Warp Properties ****
+Warp Mode		// The type of warp item
+Warp Group		// The warp group for warping to an LIO, -1 is match all groups
+Area Effect Radius	// The target effect radius in pixels, 0 is individual only unless in a multi-man vehicle
+Portal Time		// The lifespan of the portal if using portal mode
+Accuracy Radius		// How close to the target the players are warped to (in pixels)

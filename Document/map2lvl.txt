@@ -1,0 +1,898 @@
+   1.
+      #include <windows.h>
+   2.
+      #include <stdio.h>
+   3.
+      #include <stdlib.h>
+   4.
+      #include <string.h>
+   5.
+       
+   6.
+      #define PACK(buf,type,idx) *(type *)(&((unsigned char *)buf)[idx])
+   7.
+       
+   8.
+      struct Reference
+   9.
+      {
+  10.
+              char        File[32];
+  11.
+              char        ID[32];
+  12.
+      };
+  13.
+       
+  14.
+      struct Entity
+  15.
+      {
+  16.
+              unsigned short  X;
+  17.
+              unsigned short  Y;
+  18.
+              unsigned short  unk1;
+  19.
+              unsigned                flags1: 3;
+  20.
+       
+  21.
+      };
+  22.
+       
+  23.
+      struct Level
+  24.
+      {
+  25.
+              unsigned int Version;
+  26.
+       
+  27.
+              unsigned int Width;
+  28.
+              unsigned int Height;
+  29.
+             
+  30.
+              unsigned int Floors;
+  31.
+              unsigned int Objects;
+  32.
+              unsigned int Entities;
+  33.
+       
+  34.
+              char        *Header;
+  35.
+              char        *Tiles;
+  36.
+             
+  37.
+              Reference       *FloorNames;
+  38.
+              Reference       *ObjectNames;
+  39.
+      };
+  40.
+       
+  41.
+      int main(int argc, char *argv[])
+  42.
+      {
+  43.
+              printf("lvl2map by Rick [http://rick.gibbed.us/]\r\n");
+  44.
+             
+  45.
+              if (argc < 2)
+  46.
+              {
+  47.
+                      printf("%s <filename.lvl> [offset]\r\n", argv[0]);
+  48.
+                      return 0;
+  49.
+              }
+  50.
+             
+  51.
+              Level level;
+  52.
+              int fixoffset = 0;
+  53.
+             
+  54.
+              if (argc > 2)
+  55.
+              {
+  56.
+                      fixoffset = atoi(argv[2]);
+  57.
+                      printf("Using fix offset of %d\r\n", fixoffset);
+  58.
+              }
+  59.
+       
+  60.
+              char *lvlName;
+  61.
+              char *lvbName;
+  62.
+              char *baseName;
+  63.
+              char *iniName;
+  64.
+             
+  65.
+              lvlName = (char *)malloc(strlen(argv[1]) + 1);
+  66.
+              lvbName = (char *)malloc(strlen(argv[1]) + 1);
+  67.
+              baseName = (char *)malloc(strlen(argv[1]) + 1);
+  68.
+              iniName = (char *)malloc(MAX_PATH + 1);
+  69.
+             
+  70.
+              sprintf(lvlName, "%s", argv[1]);
+  71.
+              sprintf(lvbName, "%s", argv[1]);
+  72.
+              sprintf(baseName, "%s", argv[1]);
+  73.
+              sprintf(iniName, "%s", argv[1]);
+  74.
+       
+  75.
+              for (unsigned int i = strlen(baseName) - 1; i >= 0; i--)
+  76.
+              {
+  77.
+                      if (baseName[i] == '.')
+  78.
+                      {
+  79.
+                              realloc(baseName, i + 1);
+  80.
+                              baseName[i] = 0;
+  81.
+                              break;
+  82.
+                      }
+  83.
+              }
+  84.
+             
+  85.
+              printf("baseName = %s\r\n", baseName);
+  86.
+             
+  87.
+              unsigned int length = GetCurrentDirectory(MAX_PATH, iniName);
+  88.
+              strcat(iniName, "\\");
+  89.
+              strcat(iniName, lvlName);
+  90.
+             
+  91.
+              lvbName[strlen(lvbName) - 1] = 'b';
+  92.
+             
+  93.
+              iniName[strlen(iniName) - 3] = 'i';
+  94.
+              iniName[strlen(iniName) - 2] = 'n';
+  95.
+              iniName[strlen(iniName) - 1] = 'i';
+  96.
+             
+  97.
+              FILE *handle = fopen(lvlName, "rb");
+  98.
+              if (handle == NULL)
+  99.
+              {
+ 100.
+                      printf("Failed to open %s!\r\n", argv[1]);
+ 101.
+                      return 0;
+ 102.
+              }
+ 103.
+             
+ 104.
+              level.Header = (char *)malloc(5152);
+ 105.
+              fread(level.Header, 1, 5152, handle);
+ 106.
+             
+ 107.
+              level.Version = PACK(level.Header, unsigned int, 0);
+ 108.
+             
+ 109.
+              printf("Level is version %u\r\n", level.Version);
+ 110.
+             
+ 111.
+              level.Width          = PACK(level.Header, unsigned int, 0x04);
+ 112.
+              level.Height    = PACK(level.Header, unsigned int, 0x08);
+ 113.
+              level.Entities  = PACK(level.Header, unsigned int, 0x0C);
+ 114.
+              level.Floors    = PACK(level.Header, unsigned int, 0x10);
+ 115.
+              level.Objects   = PACK(level.Header, unsigned int, 0x14);
+ 116.
+             
+ 117.
+              printf("Width: %u\r\nHeight: %u\r\n", level.Width, level.Height);
+ 118.
+             
+ 119.
+              /*
+ 120.
+              unsigned int offset     = 0x820;
+ 121.
+              unsigned char data      = 128;
+ 122.
+             
+ 123.
+              printf("Processing header... ");
+ 124.
+             
+ 125.
+              while (data > 0)
+ 126.
+              {
+ 127.
+                      unsigned int value = PACK(level.Header, unsigned int, offset);
+ 128.
+                      value &= 0x8000000F;
+ 129.
+                     
+ 130.
+                      if (value > 0)
+ 131.
+                      {
+ 132.
+                              value--;
+ 133.
+                              value |= 0xFFFFFFF0;
+ 134.
+                              value++;
+ 135.
+                      }
+ 136.
+                     
+ 137.
+                      PACK(level.Header, unsigned int, offset) = value;
+ 138.
+                      offset += 4;
+ 139.
+                      data--;
+ 140.
+              }
+ 141.
+             
+ 142.
+              printf("done.\r\n");
+ 143.
+              */
+ 144.
+             
+ 145.
+              if (level.Version > 5)
+ 146.
+              {
+ 147.
+                      printf("Reading object names...\r\n");
+ 148.
+                     
+ 149.
+                      level.ObjectNames = (Reference *)malloc(sizeof(Reference) * level.Objects);
+ 150.
+                      fread(level.ObjectNames, sizeof(Reference), level.Objects, handle);
+ 151.
+                     
+ 152.
+                      /*
+ 153.
+                      for (unsigned int i = 0; i < level.Objects; i++)
+ 154.
+                      {
+ 155.
+                              printf("move \"%s\" o%u.cfs\r\n", level.ObjectNames[i].ID, i);
+ 156.
+                      }
+ 157.
+                      */
+ 158.
+       
+ 159.
+                      printf("Reading floor names...\r\n");
+ 160.
+                     
+ 161.
+                      level.FloorNames = (Reference *)malloc(sizeof(Reference) * level.Floors);
+ 162.
+                      fread(level.FloorNames, sizeof(Reference), level.Floors, handle);
+ 163.
+                     
+ 164.
+                      /*
+ 165.
+                      for (unsigned int i = 0; i < level.Floors; i++)
+ 166.
+                      {
+ 167.
+                              printf("move \"%s\" f%u.cfs\r\n", level.FloorNames[i].ID, i);
+ 168.
+                      }
+ 169.
+                      */
+ 170.
+              }
+ 171.
+              else
+ 172.
+              {
+ 173.
+              }
+ 174.
+             
+ 175.
+              unsigned int total = level.Width * level.Height;
+ 176.
+             
+ 177.
+              printf("Total data size is %u!\r\n", total * 3);
+ 178.
+             
+ 179.
+              level.Tiles = (char *)malloc(total * 3);
+ 180.
+              memset(level.Tiles, 0, total * 3);
+ 181.
+             
+ 182.
+              int max = -1;
+ 183.
+       
+ 184.
+              // Load in the crappily compressed data. Whoo.
+ 185.
+              for (unsigned char stage = 0; stage < 3; stage++)
+ 186.
+              {
+ 187.
+                      printf("Reading tile data stage #%u... ", stage + 1);
+ 188.
+                      unsigned int offset = 0;
+ 189.
+                      unsigned int j = 0;
+ 190.
+                     
+ 191.
+                      while (j < total)
+ 192.
+                      {
+ 193.
+                              unsigned int repeat = getc(handle);
+ 194.
+                             
+ 195.
+                              if (repeat == 0)
+ 196.
+                              {
+ 197.
+                                      repeat = getc(handle);
+ 198.
+                                      repeat <<= 8;
+ 199.
+                                      repeat = getc(handle) + repeat;
+ 200.
+                              }
+ 201.
+                             
+ 202.
+                              unsigned char value = getc(handle);
+ 203.
+                             
+ 204.
+                              //printf("Repeating %u %u times.\r\n", value, repeat);
+ 205.
+                              j += repeat;
+ 206.
+                             
+ 207.
+                              while (repeat)
+ 208.
+                              {
+ 209.
+                                      PACK(level.Tiles, unsigned char, offset + stage) = value;
+ 210.
+                                      offset += 3;
+ 211.
+                                      repeat--;
+ 212.
+                              }
+ 213.
+                      }
+ 214.
+                     
+ 215.
+                      printf("done (%d).\r\n", j);
+ 216.
+              }
+ 217.
+             
+ 218.
+              for (unsigned int i = 0; i < total; i++)
+ 219.
+              {
+ 220.
+                      unsigned int a;
+ 221.
+                     
+ 222.
+                      a = PACK(level.Tiles, unsigned char, (i * 3));
+ 223.
+                      a &= 0x7F;
+ 224.
+                      PACK(level.Tiles, unsigned char, (i * 3)) = a;
+ 225.
+              }
+ 226.
+             
+ 227.
+              unsigned int enttotal = level.Entities * 17;
+ 228.
+              char *entbuffer = (char *)malloc(enttotal);
+ 229.
+              memset(entbuffer, 0, enttotal);
+ 230.
+             
+ 231.
+              if (level.Version > 2)
+ 232.
+              {
+ 233.
+                      fread(entbuffer, 17, level.Entities, handle);
+ 234.
+              }
+ 235.
+              else
+ 236.
+              {
+ 237.
+                      enttotal = level.Entities;
+ 238.
+                     
+ 239.
+                      for (unsigned int stage = 0; stage < 14; stage++)
+ 240.
+                      {
+ 241.
+                              unsigned int j = 0;
+ 242.
+                              unsigned int offset = 0;
+ 243.
+                             
+ 244.
+                              while (j < enttotal)
+ 245.
+                              {
+ 246.
+                                      unsigned int repeat = getc(handle);
+ 247.
+                                     
+ 248.
+                                      if (repeat == 0)
+ 249.
+                                      {
+ 250.
+                                              repeat = getc(handle);
+ 251.
+                                              repeat <<= 8;
+ 252.
+                                              repeat = getc(handle) + repeat;
+ 253.
+                                      }
+ 254.
+                                     
+ 255.
+                                      unsigned char value = getc(handle);
+ 256.
+                                     
+ 257.
+                                      //printf("Repeating %u %u times.\r\n", value, repeat);
+ 258.
+                                      j += repeat;
+ 259.
+                                     
+ 260.
+                                      while (repeat)
+ 261.
+                                      {
+ 262.
+                                              PACK(entbuffer, unsigned char, offset + stage) = value;
+ 263.
+                                              offset += 17;
+ 264.
+                                              repeat--;
+ 265.
+                                      }
+ 266.
+                              }
+ 267.
+                      }
+ 268.
+                     
+ 269.
+                      /*
+ 270.
+                      FILE *test = fopen("test.bin", "wb");
+ 271.
+                      fwrite(entbuffer, enttotal * 17, 1, test);
+ 272.
+                      fclose(test);
+ 273.
+                      */
+ 274.
+                      // loc_4350A2
+ 275.
+              }
+ 276.
+             
+ 277.
+              if (level.Version >= 5)
+ 278.
+              {
+ 279.
+              }
+ 280.
+              else
+ 281.
+              {
+ 282.
+                      for (unsigned int i = 0; i < level.Entities; i++)
+ 283.
+                      {
+ 284.
+                              PACK(entbuffer, unsigned int, i * 17) = PACK(entbuffer, unsigned int, i * 17) & 0xBFFFFFFF;
+ 285.
+                      }
+ 286.
+              }
+ 287.
+       
+ 288.
+              fclose(handle);
+ 289.
+             
+ 290.
+              lvlName[strlen(lvlName) - 3] = 'm';
+ 291.
+              lvlName[strlen(lvlName) - 2] = 'a';
+ 292.
+              lvlName[strlen(lvlName) - 1] = 'p';
+ 293.
+       
+ 294.
+              handle = fopen(lvlName, "wb");
+ 295.
+       
+ 296.
+              if (handle == NULL)
+ 297.
+              {
+ 298.
+                      printf("Failed to open %s for writing.\r\n", lvlName);
+ 299.
+                      return 0;
+ 300.
+              }
+ 301.
+             
+ 302.
+              unsigned int v;
+ 303.
+             
+ 304.
+              char *header;
+ 305.
+             
+ 306.
+              header = (char *)malloc(4168);
+ 307.
+              memset(header, 0, 4168);
+ 308.
+             
+ 309.
+              PACK(header, unsigned int, 0) = 9;
+ 310.
+              PACK(header, unsigned int, 4) = level.Width;
+ 311.
+              PACK(header, unsigned int, 8) = level.Height;
+ 312.
+              PACK(header, unsigned int, 0x14) = level.Entities;
+ 313.
+             
+ 314.
+              /*
+ 315.
+              for (unsigned int i = 0; i < 32; i++)
+ 316.
+              {
+ 317.
+                      PACK(header, unsigned short, 0x88 + (i * 2)) = PACK(level.Header, unsigned short, 0xA60 + (i * 2));
+ 318.
+              }
+ 319.
+              */
+ 320.
+             
+ 321.
+              fwrite(header, 4168, 1, handle);
+ 322.
+              free(header);
+ 323.
+             
+ 324.
+              header = (char *)malloc(8192);
+ 325.
+              memset(header, 0, 8192);
+ 326.
+             
+ 327.
+              unsigned int offset     = 0x820;
+ 328.
+              unsigned char data      = 128;
+ 329.
+             
+ 330.
+              //printf("Processing header... ");
+ 331.
+             
+ 332.
+              while (data > 0)
+ 333.
+              {
+ 334.
+                      unsigned int value = PACK(level.Header, unsigned int, offset);
+ 335.
+                      value &= 0xFF;
+ 336.
+                     
+ 337.
+                      PACK(header, unsigned char, (128 - data) + fixoffset) = value;
+ 338.
+                      offset += 4;
+ 339.
+                      data--;
+ 340.
+              }
+ 341.
+             
+ 342.
+              //printf("done.\r\n");
+ 343.
+             
+ 344.
+              fwrite(header, 8192, 1, handle);
+ 345.
+              free(header);
+ 346.
+             
+ 347.
+              header = (char *)malloc(2048 * 64);
+ 348.
+              memset(header, 0, 2048 * 64);
+ 349.
+             
+ 350.
+              for (unsigned int i = 0; i < level.Floors; i++)
+ 351.
+              {
+ 352.
+                      //sprintf(header + (i * 64), "f_%s.blo,f%d.cfs", lvbName, i);
+ 353.
+                      if (level.Version > 5)
+ 354.
+                      {
+ 355.
+                              sprintf(header + (i * 64), "%s,%s", level.FloorNames[i].File, level.FloorNames[i].ID);
+ 356.
+                      }
+ 357.
+                      else
+ 358.
+                      {
+ 359.
+                              char defaultValue[64];
+ 360.
+                              char returnedValue[256];
+ 361.
+                              char keyName[16];
+ 362.
+                              sprintf(defaultValue, "f_%s.blo,f%d.cfs", baseName, i);
+ 363.
+                              sprintf(keyName, "%d", i);
+ 364.
+                             
+ 365.
+                              GetPrivateProfileString("Floors", keyName, defaultValue, returnedValue, 254, iniName);
+ 366.
+                             
+ 367.
+                              //sprintf(header + (i * 64), "%s,f%d.cfs", lvbName, i);
+ 368.
+                              sprintf(header + (i * 64), returnedValue);
+ 369.
+                      }
+ 370.
+                      //sprintf(cfs + (i * 64), "f_test.blo,f%d.cfs", i);
+ 371.
+              }
+ 372.
+             
+ 373.
+              fwrite(header, 64 * 2048, 1, handle);
+ 374.
+              free(header);
+ 375.
+       
+ 376.
+              //fwrite(level.Tiles, 1, (level.Width * level.Height) * 3, handle);
+ 377.
+             
+ 378.
+              v = (total * 2) * 4;
+ 379.
+              fwrite(&v, 4, 1, handle);
+ 380.
+             
+ 381.
+              for (unsigned int i = 0; i < total; i++)
+ 382.
+              {
+ 383.
+                      v = 1;
+ 384.
+                      fwrite(&v, 1, 1, handle);
+ 385.
+                      v = PACK(level.Tiles, unsigned char, (i * 3)) + fixoffset;
+ 386.
+                      fwrite(&v, 1, 1, handle);
+ 387.
+              }
+ 388.
+             
+ 389.
+              for (unsigned int i = 0; i < total; i++)
+ 390.
+              {
+ 391.
+                      v = 1;
+ 392.
+                      fwrite(&v, 1, 1, handle);
+ 393.
+                      v = 0;
+ 394.
+                      fwrite(&v, 1, 1, handle);
+ 395.
+              }
+ 396.
+       
+ 397.
+              for (unsigned int i = 0; i < total; i++)
+ 398.
+              {
+ 399.
+                      v = 1;
+ 400.
+                      fwrite(&v, 1, 1, handle);
+ 401.
+                      v = PACK(level.Tiles, unsigned char, (i * 3) + 2);
+ 402.
+                      fwrite(&v, 1, 1, handle);
+ 403.
+              }
+ 404.
+       
+ 405.
+              for (unsigned int i = 0; i < total; i++)
+ 406.
+              {
+ 407.
+                      v = 1;
+ 408.
+                      fwrite(&v, 1, 1, handle);
+ 409.
+                      v = PACK(level.Tiles, unsigned char, (i * 3) + 1);
+ 410.
+                      fwrite(&v, 1, 1, handle);
+ 411.
+              }
+ 412.
+             
+ 413.
+              for (unsigned int i = 0; i < level.Entities; i++)
+ 414.
+              {
+ 415.
+                      fwrite(entbuffer + (17 * i), 17, 1, handle);
+ 416.
+                     
+ 417.
+                      char entname[64];
+ 418.
+                      unsigned int entid = PACK(entbuffer + (17 * i), unsigned int, 4);
+ 419.
+                      entid &= 0x1FFF;
+ 420.
+                     
+ 421.
+                      memset(entname, 0, 64);
+ 422.
+                      //sprintf(entname, "o_%s.blo,o%d.cfs", lvbName, entid);
+ 423.
+                      if (level.Version > 5)
+ 424.
+                      {
+ 425.
+                              sprintf(entname, "%s,%s", level.ObjectNames[entid].File, level.ObjectNames[entid].ID);
+ 426.
+                      }
+ 427.
+                      else
+ 428.
+                      {
+ 429.
+                              //sprintf(entname, "%s,o%d.cfs", lvbName, entid);
+ 430.
+                             
+ 431.
+                              char defaultValue[64];
+ 432.
+                              char returnedValue[256];
+ 433.
+                              char keyName[16];
+ 434.
+                              sprintf(defaultValue, "o_%s.blo,o%d.cfs", baseName, entid);
+ 435.
+                              //sprintf(defaultValue, "o_default.blo,default.cfs");
+ 436.
+                              sprintf(keyName, "%d", entid);
+ 437.
+                             
+ 438.
+                              GetPrivateProfileString("Objects", keyName, defaultValue, returnedValue, 254, iniName);
+ 439.
+                             
+ 440.
+                              //sprintf(header + (i * 64), "%s,f%d.cfs", lvbName, i);
+ 441.
+                              //sprintf(header + (i * 64), returnedValue);
+ 442.
+                              sprintf(entname, returnedValue);
+ 443.
+                      }
+ 444.
+                     
+ 445.
+                      fwrite(entname, 64, 1, handle);
+ 446.
+              }
+ 447.
+             
+ 448.
+              fclose(handle);
+ 449.
+      }

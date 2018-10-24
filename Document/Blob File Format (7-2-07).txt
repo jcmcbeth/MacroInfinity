@@ -1,0 +1,46 @@
+Blob File Format
+
+* Overview
+It is a container format used for storing the data files that Infantry uses. It uses the extensions ".blo" and ".lvb".  The only type of files stored in it are CFS files and WAV files. The extension ".blo" are used for game graphics and sounds while the extension ".lvb" is used for the tiles of a map.
+
+* Versions
+There are two known versions of the blob file format.  The two versions are versions 1 and 2.  They only differences between the two versions is the maximum length the filenames of the file entries can be.  For a version 1 file the maximum length is 14 characters including a null terminator. The version 2 has been increased to a maximum of 32 characters including a null terminator.
+
+* Structure
+The file contains a simple header, followed by a list of data for each file entry, and then followed by the data stored in each file.
+
+  -----------------
+ |     HEADER      |
+ |-----------------|
+ |  FILE ENTRIES   |
+ |  Repeated for   |
+ |    each file    |
+ |-----------------|
+ |      DATA       |
+ |  Variable size  |
+ |  Repeated for   |
+ |    each file    |
+  -----------------
+
+* Header
+The heads contains the file format version number as well as the number of files it contains.
+
+Length		Name		Description
+------          ----            -----------
+DWORD		Version		Blob file version
+DWORD		Files		Number of files in the Blob
+
+* File Entries
+This section contains information about each file that is contained in the blob. The structure is repeated for each file in the blob which is indicated in the header.
+
+Length		Name		Description
+------          ----            -----------
+STRING[^]	Filename	Filename of the entry
+				(^the length is 14 for version 1, and 32 for version 2)
+DWORD		Offset		Offset from the beginning of the file where
+				the data starts for the entry
+DWORD		Size		Size of the entry in bytes
+
+* Data
+The offset and length of the data for each file is stored in the file entry section.  To read the data for a file entry is just a matter of seeking to the specified offset and reading from that point until the length of the entry.
+

@@ -1,0 +1,41 @@
+Documentation for the Infantry Blob file format.
+
+********************************************************************************
+*                                 Verson 1                                     *
+********************************************************************************
+
+Overall structure
+
+FileHeader
+FileEntry (repeated for each file)
+Data (variable size data repeated for each file)
+
+
+**** File Header ****
+DWORD		version		// The blob version
+DWORD		files		// Number of files in the blob		
+
+**** File Entry ****
+STRING[14]	filename	// The filename of a file
+DWORD		offset		// Location in the file from the beginning
+DWORD		size		// Size of the file
+
+********************************************************************************
+*                                 Verson 2                                     *
+********************************************************************************
+
+Overall structure
+
+FileHeader
+FileEntry (repeated for each file)
+Data (variable size data repeated for each file)
+
+
+**** File Header ****
+DWORD		version		// The blob version
+DWORD		files		// Number of files in the blob		
+
+**** File Entry ****
+STRING[32]	filename	// The filename of a file
+DWORD		offset		// Location in the file from the beginning
+DWORD		size		// Size of the file

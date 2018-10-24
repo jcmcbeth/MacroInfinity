@@ -1,0 +1,282 @@
+********************************************************************************
+*                              Damage Mode Enum                                *
+********************************************************************************
+Everyone		= 0
+Everyone But Self	= 1
+Enemy			= 2
+Friendly But Self	= 3
+Friendly		= 4
+Trigger Man Only	= 5
+********************************************************************************
+
+********************************************************************************
+*                              Trigger Mode Enum                               *
+********************************************************************************
+Enemy			= 0
+Friendly		= 1
+Everyone		= 2
+Nobody			= 3
+********************************************************************************
+
+********************************************************************************
+*                     Projectile Radar Mode Enum                               *
+********************************************************************************
+None			= 0
+Single Dot		= 1
+Double Dot		= 2
+Double Dot Arrow	= 3
+********************************************************************************
+
+********************************************************************************
+*                         Team HSV Setting Enum                                *
+********************************************************************************
+No				= 0
+Projectile			= 1
+Shadow				= 2
+Projectile and Shadow		= 3
+Trail				= 4
+Projectile & Trail		= 5
+Shadow & Trail			= 6
+Projectile, Shadow, & Trail	= 7
+********************************************************************************
+
+********************************************************************************
+*                              Item Types                                      *
+********************************************************************************
+Multi Items		= 1
+Ammo Items		= 4
+Projectile Items	= 6
+Vehicle Maker Items	= 7
+Multi-Use Items		= 8
+Repair Items		= 11
+Control Items		= 12
+Utility Items		= 13
+Item Maker		= 14
+Upgrade Items		= 15
+Skill Items		= 16
+Warp Items		= 17
+
+**** Item Properties ****
+Item Type		Type of item 	
+Version			probably the item's version it was saved under
+Item ID			Unique Number Identifier
+Name			Name of the item
+Category		Category of the item, used in the buy list
+Skill Logic		Who can use the item, classes and such
+Description		Description of the item
+Weight			The weight of the item, *1000
+Buy Price		0 is unpurchasable
+Probability		-1, never hide or allow in inventory, 0 is hide
+Dropable		0 is cannot be droped, anything else is can be dropped
+Key Preference		Default key it is assigned to, 0 for no preference
+Recommended		Recommended quantity used to prioritize auto dumping
+Max Allowed		Max allowed in inventory, 0 is unlimited, negative numbers equal absolute limit, positive is usable limit
+Pickup Mode		How to handling pick up the item
+Sell Price		-1 no buy back, 0 will take it for free, item has to be purchasable to be sellable
+Expire Timer		How long an item will stay in your inventory before it expires, 0 is never, if dropped it disappears
+Radar Color		The color of the item on radar, rgb
+Prize Bounty Points	The amount of points this item awards when picked up
+Relative ID		The relative ID to assign to the item when dropped
+Held Category Type	The type code for grouping together inventory items that need to be counted together, between 0 and 30, 0 is no category
+Prune Drop Percent	The percentage of this item to drop on the ground when killed, 0 is none, 1000=100%, and negative values mean the item is hidden
+Prune Odds		Odds of the item being pruned, 0 = never, 1000=100%=always
+
+**** Graphics ****
+Blob File		// The blob file the cfs file is in
+Filename		// The filename of the cfs
+Light Permutation	// Light and color intensity, 0-23 white, 24-47 red, 48-71 green, 72-95 blue, higher is full
+Palette Offset		// Negative numbers mean special effects
+Hue			// Hue Shift
+Saturation		// Saturation shift
+Value			// Value Shift
+Animation Time		// Animation time in ticks, 0 to use cfs file
+
+**** Cash Properties ****
+Cash			Amount of money the item is worth, can be negative
+Energy			Amount of Energy the item is worth, can be negative
+Health			Amount of Health the item is worth, can be negative
+Repair			Amount of Repair the item is worth, if in a vehicle, can be negative
+Experience		Amount of experience the item is worth, can be negative
+Recieved Items[16]	The ID of 16 items that are received with this item
+Expand Radius		This item can be split up into sub prizes when dropped within this radius, 0 means do not expand
+
+**** Ammo Properties ****
+Use Ammo ID		ID of the ammo this weapon uses, 0 for no ammo needed
+Ammo Per Shot		Amount used per shot fired
+Ammo Capacity		Amount of shots before the reload delay
+Required Item		ID of an item required to use this
+Required Item Amount	Amount of the required item needed to use the item
+
+**** Energy Cost ****
+Terrain 0-15		Amount of energy cost to fire the item on this terrain (*1000). -1 is never, -2 is max energy, -3 is remaining energy
+Second Shot Energy	Amount of energy it cost to fire a 2nd, third, or more shots immediately (does not effect turrets)
+Second Shot Timeout	How long before the second shot is reset in ticks (positive is absolute, negative is dissapating penalty)
+
+**** Fire Properties ****
+Fire Delay		Amount of time this weapon can be fired again (in ticks)
+Fire Delay Other	Amount of time other weapons can be fire again after this one (in ticks)
+Max. Fire Delay		Maximum amount of Fire Delay that can be imposed on this weapon by another (-1 for unlimited)
+Entry Fire Delay	How long the fire delay is imposed on the player after coming back to life.
+Normal Reload Delay	The amount of time without firing any weapon that it takes to reload when empty (0 is no synchronous reload)
+Partial Reload Delay	The amount of time without firing any weapon that it takes to reload when partially empty (0 is no synchrnous partial reload)
+Asynchronous Reload	How long after this weapon is completely empty before it is reloaded. Asynchrnous of anything else going on.  (0 is no async reload when empty)
+Asynchrnous Partial	How long after this weapon must go unfired while it is partially empty before it is reloaded. Asynchrnous of anything else going on.  (0 is no async partial reload when empty)
+	Reload
+Route Range		Distance in pixels to have this packet sent to you. 0 is to use default range
+Route Rotational Range	Additional amount added to the route range depending on the direction fired (in pixels)
+Unknown	
+Route Friendly		Whether this projectile is routed to teamates only		
+Recoil			Amount of backward thrust when this item is fired
+Vertical Recoil		Amount of vertical thrust when the item is fired (for vehicle hops)
+Prefire Delay		Delay before pressing the fire key and it firing
+Reliability		Odds of the weapon misfiring (0 is never, 1000 is always)
+Reliability Fire Delay	The amount of delay to impose for a misfire (in ticks)
+
+**** Sounds ****
+Blob File		The blob file the wav file is in
+Filename		The filename of the wav
+Simultaneous		How many times the sound can be played simultaneously
+Unknown	
+
+**** Soccer Properties ****
+Move Prefire Cancel	If movement cancels prefire
+Prefire Notify		If others should be notified of prefire
+Cash Cost		Amount of cash it cost to fire this item
+Use With Ball		If the item is allowed to be used when carrying a ball
+Use With Flag		If the item is allowed to be used when carrying a flag
+Soccer Throw		Throw mode style
+Ball Friction		Amount of friction on the ball, 0 none, 10000 near infinite, -1 is use default
+Ball Speed		How fast the ball is thrown, 0 is use default
+Ball Low Fire Angle	Low angle to fire the ball at (in degrees)
+Ball High Fire Angle	High angle to fire the ball at (in degrees)
+
+**** Projectile Properties ****
+Horizontal Friction %	Amount of horizontal fricton (per tick) on the projectile (0 full, 10000 is none)
+Inherit Speed %		Percentage of speed inherited from the vehicle (0 is none, 1000 is 100%, and negative is only direction fired component)
+Inherit Z Speed %	Percentage of Z speed inherited from the vehicle (0 is none, 1000 is 100%, and negative is only direction fired component)
+Start Height Adjust	Relative adjustment to Z starting position of projectile. (0 is none)
+Low Rotation Angle	Low fire direction relative to facing direction.  (in degrees. 0 = direction facing.  180=backwards)
+High Rotation Angle	High fire direction relative to facing direction.  (in degrees. 0 = direction facing.  180=backwards)
+Low Fire Angle		Low angle to fire projectile at, in degrees.  (0=flat, 90=straight up, -1000= inherit from vehicle)
+High Fire Angle		High fire angle to fire projectile at.  (in degrees, 0=flat, 90=straight up)
+Muzzle Velocity		How fast projectile starts at (in thousandths of pixels per tick).  keep below 4000 at most.
+Gravity Acceleration	0=no gravity, 1= level default gravity, negative numbers=downward gravity (-25 is about normal)
+Bounce Horizontal	Percent of horizontal speed kept after bounching on wall. (0=none, 1000=100%)
+	Speed %	
+Bounce Count		Number of bounces before weapon explodes.  (0=none, -1=ignore wallphysics, -2=expire weapon if it hits wall)
+Floor Bounce Vertical	Percent of vertical speed kept after bouncing on floor.  (0=none, 1000=100%)
+	Speed %
+Floor Bounce Horizontal	Percent of horizontal speed kept after bouncing on floor. (0=none, 1000=100%)
+	Speed %
+Floor Bounce Count	Number of bounces on floor before weapon explodes.  (0=none, positive=explode when over limit, negative=freeze in place when over limit)
+Proximity Radius	Distance from vehicle before weapon is triggered. (in pixels)
+Trigger Weight		0=any vehicle, otherwise weight needed to trigger projectile (positive means vehicle-weight must be greater than specified, negative means vehicle-weight must be less than the absolute value of what is specified)
+Alive Time		How long projectile is alive (in ticks).  Positive = disappear after, negative = explode after.
+Rotational Start Time	Time at which rotation variables kick on.
+Rotational End Time	Time at which rotation variables kick off.
+Rotational Speed	How quickly things start rotating.
+Rotational Acceleration	How quickly the rotation speed changes.
+Inactive Time		Amount of time before the proximity trigger is activated.  (-1=after first bound)
+Damage Mode		The damage mode.
+Unknown
+Unknown
+Trail Delay		Amount of delay between leaving trail graphics.
+Explosion Recoil Radius	Recoil radius in pixels.  (0=no recoil effect, negative=dissipate recoil effect with distance [use sparingly fairly CPU intensive])
+Explosion Recoil	Amount of force on the explosion attributed to vehicles.
+   Vehicle
+Explosion Recoil	Amount of vertical force on the explosion attributed to vehicles.  (Will not effect vehicles that specify no gravity.)	
+   Vehicle Vertical
+Explosion Recoil Ignore	Amount of time vehicle will ignore it's own top-speed parameter due to this recoil effect.
+   Time
+Explosion Recoil Weapon	Amount of force on the explosion attributed to weapons.
+Explosion Recoil Weapon	How long after its initial recoil it continues to recoil weapons from that spot.
+   Duration
+Vehicle Absolute	Whether the recoil force applied to vehicle is additive to current vehicle vector or absolute.  (0=additive, 1=absolute)
+Weapon Absolute		Whether the recoil force applied to projectiles is additive to current weapon vector or absolute. (0=additive, 1=absolute)
+Explosion Recoil	Amount of additional force exerted in the direction the projectile was traveling as a percent of travel speed.
+   Directional Percent
+Shake Amount		How long the screen shakes (in ticks) adjusted for how close it was using the damageEventRadius, longer the shake, the more intense it is... it dissipates.
+Max. Live Per Category	Category Code used to classify this weapon for purposes of counting how many of them are alive. (0=no category so it counts only items of this specific type)
+   Code
+Max. Live Per Player	Maximum number of this type of projectile (based on Category Code) allowed alive on a per player basis. (0 = infinite) (use sparingly)
+Max. Live Per Team	Maximum number of this type of projectile (based on Category Code) allowed alive on a per team basis. (0 = infinite) (use sparingly)
+Max. Live Per Level	Maximum number of this type of projectile (based on Category Code) allowed alive on a per level basis. (0 = infinite) (use sparingly)
+Anti Effects Duration
+   Radius
+Anti Effects Duration
+   Recharge
+Anti Effects Duration
+   Fire
+Anti Effects Duration
+   Thrust
+Anti Effects Duration
+   Rotate
+Anti Effects Duration
+   Ball Pickup Duration
+Anti Effects Duration
+   Ball Throw Duration
+Prevent Point Blank	Whether point blank damage should be disallowed (-1=use blast radius, 0=no-check, positive=pixel radius)
+Explode Item		A projectile or multi-item that is fired at the spot of the explosion of this projectile (Fire speed, direction, and fire height of child determined by parent)
+Unknown
+Unknown
+Unknown
+Damage Event Radius	Radius of effect for damage event string.
+Damage Event String	Event string to execute when you are hit by this item.
+Unknown
+Team HSV Setting	Whether the graphic combines in the team HSV adjustment for the team firing it.
+Vehicle Gravity		Amount of gravitational pull this projectile has. (Use VERY sparingly, must be a rare weapon.) (Trigger mode must be set to enemy, only enemies will be effected by it)
+
+
+
+				Kinetic Damage
+Blast Radius
+Inner Damage
+Outer Damage
+				Explosive Damage
+Blast Radius
+Inner Damage
+outer Damage
+				Electronic Damage
+Blast Radius
+Inner Damage
+Outer Damage
+				Psionic Damage
+Blast Radius
+Inner Damage
+Out Damage
+				Bypass Damage
+Blast Radius
+Inner Damage
+Outer Damage
+				Energy Drain
+Blast Radius
+Inner Damage
+Outer Damage
+
+********************************************************************************
+*                               Multi Item [1]                                 *
+********************************************************************************
+0-22	Item Properties		
+23-30	Graphics		Icon Graphics
+31-52	Cash Properties
+********************************************************************************
+
+********************************************************************************
+*                               Ammo Item [4]                                  *
+********************************************************************************
+0-22	Item Properties		
+23-30	Graphics		Icon Graphics	
+********************************************************************************
+
+********************************************************************************
+*                         Projectile Item [6]                                  *
+********************************************************************************
+0-22	Item Properties
+23-30	Graphics		Icon Graphics
+31-35	Ammo Properties
+36-53	Energy Cost
+54-70	Fire Properties
+71-78	Graphics		Prefire Graphics
+79-73	Sound			Prefire Sound	
+74-73	Soccer Properties
+********************************************************************************

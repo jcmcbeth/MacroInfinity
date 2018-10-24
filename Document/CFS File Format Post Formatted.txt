@@ -1,0 +1,113 @@
+Currently i'm working on a project to create a library to handle all of Infantry's data and settings, and maybe networking operations.  What this requires is for me to figure out and document all the files, file formats, registry settings, networking protocols, etc.
+
+So far, i've gotten .itm file format and the .cfs file formats pretty much figured out.  So, i'm going to elaborate on the .cfs file format in this post.
+
+There are 4 different formats of CFS files that I have seen. Those being versions 2, 3, 4, and 5.  The one I know least about is version 5.  The way i've gone about figuring all this out is using a hex editor and the CFSConvW utility, which does not support version 5 files.  The CFSConvW utility can read version 2, 3, and 4 files and writes version 4 files.  So, that is the version I have the most complete documents on and I will elaborate on here.
+
+[b]The overall format (Version 4):[/b]
+File Header
+Color Palette
+Frame Meta Information
+User Data
+Bitmap Data
+
+It is pretty much a glorified bitmap file.  The file header contains Infantry specific information which is used to render the animated sprite.  The color palette is the same as a normal 8-bit indexed bitmap, it's ABGR, I believe.  Then comes meta data for each frame, this information is used for the compression. I don't know what the user data is and i've never seen a file with any.  The bitmap data, when uncompressed is 8-bit indexed bitmap data where all the frames are put together in rows and columns to form one large bitmap.
+
+[b]Blit Mode Enumeration[/b]
+[code]0x01	Normal
+0x02	Alpha 25%
+0x03	Alpha 33%
+0x04	Alpha 50%
+0x05	Alpha 66%
+0x06	Alpha 75%[/code]
+
+[b]Sort Transform Enumeration[/b]
+[code]0x01	Diagonal Left
+0x02	Diagonal Right
+0x03	Horizontal Thin
+0x04	Vertical Thin
+0x05	Intermediate[/code]
+
+[b]Row Meaning Enumeration[/b]
+[code]0x01	Nothing
+0x02	Rotational Points
+0x03	Height Points[/code]
+
+[b]Compression Flags[/b]
+[code]0x01	Dupe each row flipping frame vertically
+0x02	Dupe each row flipping frame horizontally
+0x04	Columns are half rotation, mirror columns to other half (source = 12am to 6am)
+0x08	Columns are quarter rotation, mirror columns to other quadrants (source = 12am to 3am)
+0x10	No Pixels
+0x20	Rows are half rotation, mirror rows to other half (source = 12am to 6am)
+0x40	Rows are quarter rotation, mirror rows to other quadrants (source = 12am to 3am)
+0x80	No Compression[/code]
+
+[b]File Header Format[/b]
+[code]Offset		Size		Name			Details
+0x00000000	WORD		Version			Either 2, 3, 4 or 5.
+0x00000002	WORD		# Frames		Number of frames contained in the file.
+0x00000004	WORD		Animation Time		Amount of milliseconds to complete the animation.
+0x00000006	WORD		Frame Width		Width of each frame.
+0x00000008	WORD		Frame Height		Height of each frame.
+0x0000000A	WORD		# Rows			Number of rows of frames.
+0x0000000C	WORD		# Columns		Number of rows of columns.
+0x0000000E	WORD		# Shadows		Number of colors that are treated as shadows, these start from the last index.
+0x00000010	WORD		# Lights		Number of colors treated as lights, these start before the shadow colors.
+0x00000012	WORD		User Data Length	Length of custom data prior to the actual bitmap data.
+0x00000013	BYTE		Compression Flags	Flags detailing how the file is compressed.
+0x00000014	BYTE		Max Solid Index		The last index that is not a light or shadow color.
+0x00000016	DWORD		Data Size		The size of only the pixel data.
+0x0000001A	STRING[16]	Name			A string identifying the sprite.
+0x0000002A	BYTE		Blit Mode		Unknown
+0x0000002B	BYTE		Row Meaning		How the rows should be interrpreted.
+0x0000002C	WORD		Y Sort Adjust		Unknown
+0x0000002E	BYTE		Sort Transform		Unknown
+0x0000002F	BYTE		User Palette Start	Starting index of the user palette.
+0x00000030	BYTE		User Palette		Default user palette.
+0x00000031	STRING[48]	Description		A string describing the sprite.
+0x00000061	BYTE[32]	Unknown			Unknown[/code]
+
+[b]Frame Meta Data Format[/b]
+[code]		Size		Name			Details
+		WORD		YOffset			Y location of the cropped frame in the original frame.
+		WORD		XOffset			X location of the cropped frame in the original frame.
+		WORD		Frame Width		Width of the frame.
+		WORD		Frame Height		Height of the frame.
+		DWORD		Data Offset		Offset of the frame data starting after the Frame Meta Data and User Data[/code]
+This format is repeated for each frame in the file.
+
+[u][b]Compression Format[/b][/u]
+There are many different methods used to shrink the size of the file.
+
+[b]Crop Transparent Frames[/b]
+While the sprite has a fixed width and height, each individual frame may have different width's and height based on the amount of transparency surrounding it. All frames have a large border of transparent pixels surrounding them, so that is all cropped out and an X and Y offset is saved in the frame meta data where the resulting cropped data is located in the original sprite.
+
+[b]Run Length Encoding[/b]
+There is a run length encoding used, but only for runs of transparent pixels.  At the begining of each frame data is an array of values.  The number of values is equal to the height of the frame, each byte represents the length of compressed data in one scan line.
+
+So, if the height of the frame is 16 and the offset is 100000, the values between 1000-1015 are the length of compressed data for each line.  Lets say the first two values were 55 and 26.  Then if you read 55 bytes starting at index 1016, that will be all the compressed data for the first scan line, and the next 26 bytes would be all the data for the second scan line.
+
+Once you have read all the scan lines you can decode the run length encoding by reading the first byte of the scan line.  It will be in the format XXXXYYYY where each letter is a bit.  The first four bits XXXX will contain the number of contiguous transparent pixels.  So you just repeat the transparent index (which is zero) that many times.  The next four bits YYYY indicate the number of non-zero bytes following.  For example,
+
+[code]	45 A3 34 FE 33 1A 31 FF[/code]
+
+would be decompressed into
+
+[code]	00 00 00 00 A3 34 FE 33 1A 00 00 00 FF[/code]
+
+Also, note that the array of scan line lengths can contain zeros, which means that the entire scan line only contains transparent pixels.
+
+[b]Reference Frames[/b]
+This part of the compression i've not totally figured out yet.  However, if the sprite has frames are identical, but are only rotated, according to the compressed flags, it has a frame meta data but uses the same data offset as the identical frame.
+
+It uses constant values for the frame width and height to indicate how the frame data should be altered.  It also indicates this by settings only the width, height, or width and height to these values.  
+
+For example, if the frame width is 0xE7FF and the frame height is normal then the frame data should be rotated 180 degrees counter-clockwise.  Although if both width and height are equal to 0xE7FF then it means it should be rotated differently.
+
+The constants are:
+[code]	0xE7FF
+	0xCEFF
+	0xC0FF[/code]
+
+However I have not documented their meanings yet.  Also the frame width and height can be and are negative some times and they have a special meaning which effects the way the frame is rendered.  Also the fact that only the most significant byte is 0xFF and that the least significant bytes are no contiguous would indicate that there may be more options.

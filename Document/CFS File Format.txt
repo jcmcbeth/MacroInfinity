@@ -1,0 +1,113 @@
+Documentation for the CFS File Format
+Blit Mode Enumeration
+0x01	Normal
+0x02	Alpha 25%
+0x03	Alpha 33%
+0x04	Alpha 50%
+0x05	Alpha 66%
+0x06	Alpha 75%
+
+Sort Transform Enumeration
+0x01	Diagonal Left
+0x02	Diagonal Right
+0x03	Horizontal Thin
+0x04	Vertical Thin
+0x05	Intermediate
+
+Row Meaning Enumeration
+0x01	Nothing
+0x02	Rotational Points
+0x03	Height Points
+
+Compression Flags
+0x01	Dupe each row flipping frame vertically
+0x02	Dupe each row flipping frame horizontally
+0x04	Columns are half rotation, mirror columns to other half (source = 12am to 6am)
+0x08	Columns are quarter rotation, mirror columns to other quadrants (source = 12am to 3am)
+0x10	No Pixels
+0x20	Rows are half rotation, mirror rows to other half (source = 12am to 6am)
+0x40	Rows are quarter rotation, mirror rows to other quadrants (source = 12am to 3am)
+
+OFFSET		SIZE		DESCRIPTION
+0x00000000	WORD		Version [Version 4]
+0x00000002	WORD		# Frames
+0x00000004	WORD		Animation Time
+0x00000006	WORD		Frame Width
+0x00000008	WORD		Frame Height
+0x0000000A	WORD		# Rows
+0x0000000C	WORD		# Columns
+0x0000000E	WORD		# Shadows
+0x00000010	WORD		# Lights
+0x00000012	WORD		User Data Length
+0x00000013	BYTE		Flags
+0x00000014	BYTE		Max Solid Index
+0x00000016	DWORD		Data Size
+0x0000001A	STRING[16]	Name;
+0x0000002A	BYTE		Blit Mode
+0x0000002B	BYTE		Row Meaning
+0x0000002C	WORD		Y Sort Adjust
+0x0000002E	BYTE		Sort Transform
+0x0000002F	BYTE		User Palette Start
+0x00000030	BYTE		User Palette
+0x00000031	STRING[48]	Description
+0x00000061	BYTE[32]	Unknown2
+0x00000081	BYTE[1024]	Color Palette
+0x00000481	BYTE[*]	Frame Information
+
+REPEATED FOR EACH FRAME
+WORD		YOffset	// The Y Offset of the pixel data within a transparent frame
+WORD		XOffset	// The X offset of the pixel data within a transparent frame
+WORD		Frame Width
+WORD		Frame Height
+DWORD		Data Offset	// The number of bytes from the begining of the data
+FRAME DATA END
+
+BYTE[*]		User Data
+BYTE[*]		Picture Data
+
+Frame widths and heights can have negative values and it effects the way a frame is drawn, but it is unknown to me.
+Transparent scan lines can have a stride of zero. 
+
+OFFSET		SIZE		DESCRIPTION
+0x00000000	WORD		Version [Version 3]
+0x00000002	WORD		# Frames
+0x00000004	WORD		Animation Time
+0x00000006	WORD		Frame Width
+0x00000008	WORD		Frame Height
+0x0000000A	WORD		# Rows
+0x0000000C	WORD		# Columns
+0x0000000E	WORD		# Shadows
+0x00000010	WORD		# Lights
+0x00000012	WORD		User Data Length
+0x00000013	BYTE		Flags
+0x00000014	BYTE		Max Solid Index
+0x00000016	DWORD		Data Size
+0x0000001A	STRING[16]	Name
+0x0000002A	BYTE		Blit Mode
+0x0000002B	BYTE		Row Meaning
+0x0000002C	WORD		Y Sort Adjust
+0x0000002E	BYTE		Sort Transform
+0x0000002F	BYTE		User Palette Start
+0x00000030	BYTE		User Palette
+0x00000031	BYTE[9]		Unknown2
+
+
+0x0000003A	BYTE[1024]	Color Palette
+
+OFFSET		SIZE		DESCRIPTION
+0x00000000	WORD		Version [Version 2]
+0x00000002	WORD		# Frames
+0x00000004	WORD		Animation Time
+0x00000006	WORD		Frame Width
+0x00000008	WORD		Frame Height
+0x0000000A	WORD		# Rows
+0x0000000C	WORD		# Columns
+0x0000000E	WORD		# Shadows
+0x00000010	WORD		# Lights
+
+0x0000003A	BYTE[1024]	Color Palette
+
+OFFSET		SIZE		DESCRIPTION
+0x00000000	WORD		Version [Version 5]
+0x00000002	DWORD		unknown, some kind of file size
+0x00000006	WORD		Frame Count

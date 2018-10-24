@@ -1,0 +1,7 @@
+﻿Version 1.2
+- Added a label to show a count of unexpected file types and excluded them from being saved to the output file.
+- Removed the mp3 file count as mp3 are not used by Infantry
+Version 1.1
+- Fixed a bug where files that were unknown cfs versions did not have their info saved
+Version 1.0
+- Initial Release

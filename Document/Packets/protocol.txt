@@ -1,0 +1,64 @@
+**** Zone Ping ****
+DWORD	time	// The time, number of seconds from january 1st, 1970
+
+Response:
+DWORD	users	// Number of users in the zone
+DWORD	time	// The time, number of seconds from january 1st, 1970
+
+**** Zonelist ****
+
+
+Response:
+WORD		ID (3)		// Packet ID
+WORD		unknown (0)
+WORD		unknown (1)
+* Repeats for the number of zones. *
+DWORD		ip address	// Ip address of the zone
+WORD		port		// port for the zone
+WORD		unknown (0)
+WORD		unknown (1)
+WORD		unknown (149)
+CHAR[41]	Zone Name
+
+**** Join Request ****
+WORD		ID (2)		// Packet ID
+BYTE		unknown (2)
+BYTE		unknown (0)
+DWORD		unknown (*)	// Same as in response
+
+Response:
+WORD		ID (2)		// Packet ID
+DWORD		unknown (*)	// Same as original packet
+DWORD		unknown (0)
+
+
+**** Login Credentials ****
+WORD		ID (3)		// Packet ID
+DWORD		unknown (0)
+WORD		unknown (1)
+BYTE		unknown (0)
+CHAR[32]	Username	// Username of the player
+CHAR[32]	Password	// Password of the player
+CHAR[32]	Sysop Password	// Password for the sysop
+BYTE[62]	Unknown
+
+
+**** Unknown Packet ****
+WORD		ID (0x0B)	// Packet ID
+DWORD		unknown (0)
+BYTE		unknown (0)
+
+**** Login Response Message ****
+WORD		ID (0x03)	// Packet ID
+DWORD		unknown (0)
+WORD		unknown (1)
+BYTE		unknown 
+WORD		unknown
+STRING		Config File	// Filename of the config file the zone uses
+BYTE[11]	unknown
+STRING		Error Message	// Error message when login failed
+
+**** Unknown Packet ****
+WORD		ID (0x03)	// Packet ID
+WORD		unknown (0x02)	
+DWORD		unknown

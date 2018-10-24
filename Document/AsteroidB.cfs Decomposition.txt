@@ -1,0 +1,28 @@
+* Pixel Data Start *
+0x0000751
+
+FIRST FRAME
+Scan Line Length
+Pixel Data Start Offset    0x00000751
+Frame Meta Info Offset    +0x00000000
+                           ----------
+Scan Line Lengths Offset   0x00000751
+
+
+Bitmap Data
+Scan Line Lengths Offset   0x00000751
+Number of Scan lines      +0x00000080
+                           ----------
+Bitmap data offset         0x000007D1
+
+
+Scan line lengths
+
+03 06 09 13 15 16 18 1E20232424252627292B2C2E2F2F303030302E2E2D2C2B2B292927272524201D1C181716120D0C0AF091F9F074FB3049FBF057FA61609D5C9DFABFFBFCFBFBFBFBFAFAFC608A4C6060600261F9AFFB618A9E889F425D60615F4C9E4C4C049F4CFDF99FFB2E8C8C524C8C5E9F608C8C8D906005889E9E5EFC8F
+
++ Header
++ Palette
++ FrameMetaInfo[FrameCount]
+**** Appears once for each frame ****
++ ScanLineLength[Height]
++ RLE Bitmap Data

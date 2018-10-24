@@ -1,0 +1,14 @@
+Version			// Version the skill was saved under
+Skill ID		// Unqiue number identifier, negitive for attributes, positive for skills
+Price			// In experience points
+Vehicle ID		// Default vehicle the player will use if they buy this skill, -1 is none
+Reset Skills		// If buying this will reset your skills, 1 for true, 0 for false
+****
+Item Award Quantity	// The quantity of the item to award when purchasing this skill
+Item Award ID		// The ID of the item to award when purchasing this skill
+****
+Cash			// Money awarded for purchasing this skill, can be negative to take away
+Name			// Name of the skills
+Category		// Not used for attributes
+Skill Logic		// Requirements for the skill
+Description		// Description of the skill
