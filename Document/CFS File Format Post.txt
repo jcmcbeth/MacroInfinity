@@ -88,7 +88,7 @@ While the sprite has a fixed width and height, each individual frame may have di
 Run Length Encoding
 There is a run length encoding used, but only for runs of transparent pixels.  At the begining of each frame data is an array of values.  The number of values is equal to the height of the frame, each byte represents the length of compressed data in one scan line.
 
-So, if the height of the frame is 16 and the offset is 100000, the values between 1000-1015 are the length of compressed data for each line.  Lets say the first two values were 55 and 26.  Then if you read 55 bytes starting at index 1016, that will be all the compressed data for the first scan line, and the next 26 bytes would be all the data for the second scan line.
+So, if the height of the frame is 16 and the offset is 1000, the values between 1000-1015 are the length of compressed data for each line.  Lets say the first two values were 55 and 26.  Then if you read 55 bytes starting at index 1016, that will be all the compressed data for the first scan line, and the next 26 bytes would be all the data for the second scan line.
 
 Once you have read all the scan lines you can decode the run length encoding by reading the first byte of the scan line.  It will be in the format XXXXYYYY where each letter is a bit.  The first four bits XXXX will contain the number of contiguous transparent pixels.  So you just repeat the transparent index (which is zero) that many times.  The next four bits YYYY indicate the number of non-zero bytes following.  For example,
 

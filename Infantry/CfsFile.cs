@@ -422,6 +422,7 @@ namespace Infantry.Cfs
                 _height = (int)BitConverter.ToInt16(buffer, offset); offset += 2;
                 _rows = (int)BitConverter.ToInt16(buffer, offset); offset += 2;
                 _columns = (int)BitConverter.ToInt16(buffer, offset); offset += 2;
+                // TODO: docs say shadows then lights; verify
                 _lightLength = (int)BitConverter.ToInt16(buffer, offset); offset += 2;
                 _shadowLength = (int)BitConverter.ToInt16(buffer, offset); offset += 2;
                 _userDataLength = (int)BitConverter.ToInt16(buffer, offset); offset += 2;
